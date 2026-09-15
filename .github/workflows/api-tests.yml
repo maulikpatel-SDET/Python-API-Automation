@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ENVIRONMENT: ${{ github.event.inputs.environment || 'qa' }}
+      ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'qa' }}
       PYTHONUNBUFFERED: "1"
 
     steps:
@@ -63,11 +63,11 @@ jobs:
       - name: Write summary
         if: always()
         run: |
-          echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
-          echo "- Branch: $GITHUB_REF" >> $GITHUB_STEP_SUMMARY
-          echo "- Commit: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
-          echo "- Run Date: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Environment: $ENVIRONMENT" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch: $GITHUB_REF" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Run Date: $(date)" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload test results
         if: always()
@@ -90,4 +90,3 @@ jobs:
               repo: context.repo.repo,
               body: `✅ API Tests executed on **${{ env.ENVIRONMENT }}** environment\n\n📊 Environment: \`${{ env.ENVIRONMENT }}\`\n🔗 Commit: ${{ github.sha }}\n⏱️ Run: ${{ github.run_id }}`
             })
-```
