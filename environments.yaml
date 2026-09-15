@@ -1,0 +1,31 @@
+default_environment: qa
+
+environments:
+  dev:
+    base_url: "https://jsonplaceholder.typicode.com"
+    headers:
+      Content-Type: application/json
+    timeout: 10
+    variables:
+      api_version: v1
+
+  qa:
+    base_url: "https://jsonplaceholder.typicode.com"
+    headers:
+      Content-Type: application/json
+      X-Env: qa
+    timeout: 15
+    variables:
+      api_version: v1
+
+  prod:
+    base_url: "sad"
+    headers:
+      Content-Type: application/json
+      X-Env: prod
+    timeout: 20
+    variables:
+      api_version: v1
+
+# pytest -q --env=prod
+# APP_ENV=prod pytest -q
